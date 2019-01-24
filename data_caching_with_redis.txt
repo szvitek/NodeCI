@@ -41,3 +41,6 @@ redis keys:
 we want query keys that are consistent but unique between query executions
 const blogs = await Blog.find({ _user: req.user.id });
 ie: in the *BLOGS* collection find blogs with _user *REQ.USER.ID*
+
+delete all cached data
+client.flushAll();
