@@ -1,0 +1,43 @@
+query -> index -> record
+when a query hits mongo it's checking its index table, so it doesn't go through all the records it may imporve the performance
+but these indexes are linked to the _id property of the document
+so if we qurey a document NOT by its _id mongo goes through all the documents. (full collection scan)
+this operation is very expensive but there are two ways to solve this porblem:
+-add index for other properties (obviuos solution but its make write operations slower, and requires more disk space and memory)
+-caching
+
+how caching works
+fontend -> express -> mongoose -> [cache server] -> mongodb
+if mongoose issues a query first it checks the cache
+cache server check if the SAME query was issued before
+if no: forwards the query to mongodb, and saves the result for the query, and returns to mongoose
+if the same query issued again it will read from cache without hitting mongo
+caching is for read only
+if we write in mongo cache clears the stored values related to the record we wrote or updated
+
+redis:
+in memory data store
+~tiny database that runs in memory
+if its restarded or stopp all the data is deleted from it
+
+using redis with docker:
+docker pull redis
+docker run -d -p 6379:6379 --name redis redis
+docker stop redis
+docker start redis
+
+using redis
+!REDIS CAN ONLY STORE NUMBER/STRINGS!
+getting/setting key value pairs
+set('hi' 'there');
+get('hi', (err, val) => console.log(val))  // there
+
+getting/setting "objects" (hashes)
+hset('spanish', 'red', 'rojo')
+hget('spanis', 'red', (err, val) => console.log(val)) // rojo
+
+caching strategies
+redis keys:
+we want query keys that are consistent but unique between query executions
+const blogs = await Blog.find({ _user: req.user.id });
+ie: in the *BLOGS* collection find blogs with _user *REQ.USER.ID*
