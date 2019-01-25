@@ -44,3 +44,22 @@ ie: in the *BLOGS* collection find blogs with _user *REQ.USER.ID*
 
 delete all cached data
 client.flushAll();
+
+current problems:
+-cached values never expire
++add timeout to values assigned to redis. Also add ability to reset all values tied to some specific event
+
+-bunch of code that is not reusable
++hook into mongoose's query generation and execution process
+
+-cache keys won't work when we introduce other collections or query options
++figure out a more robust solution for generating cache keys
+
+set auto expiry in redis
+set('color', 'red', 'EX', 5)
+'color'   -> key
+'red'     -> value
+'EX'      -> expiry date
+5         -> seconds
+
+only this is not enough we need to clear/update values if new resource is added, or deleted...
