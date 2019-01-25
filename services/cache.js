@@ -10,8 +10,20 @@ client.get = util.promisify(client.get);
 // store the reference of the original exec function
 const exec = mongoose.Query.prototype.exec;
 
+mongoose.Query.prototype.cache = function() {
+  // set a flag to cahce the results
+  this.useCache = true;
+
+  // make this function chainable
+  return this;
+}
+
 // must use function() {} bc of 'this'
 mongoose.Query.prototype.exec = async function() {
+  if(!this.useCache) {
+    return exec.apply(this, arguments);
+  }
+
   // do not modify the result of getQuery because it may modify the results, so prepare a new object for the cahce key
   const key = JSON.stringify({...this.getQuery(), collection: this.mongooseCollection.name});
 
