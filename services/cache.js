@@ -47,7 +47,9 @@ mongoose.Query.prototype.exec = async function() {
   // exec returns a mongoose document
   const result = await exec.apply(this, arguments);
 
-  client.set(key, JSON.stringify(result));
+  // setting cache auto expiry for 10 secondes
+  // note: keys that already exist in redis wont have this expiry time
+  client.set(key, JSON.stringify(result), 'EX', 10);
 
   return result;
 
