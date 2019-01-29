@@ -1,0 +1,20 @@
+Unit testing:
+Assert that one piece of your app is working the way you expect.
+
+Integration testing:
+Make sure that multiple 'units' work together correctly.
+
+flow:
+start react and express apps
+->
+run 'npm run test'
+->
+start Jest test suite
+->
+ |=>Boot up a 'headless' version of Chromium
+r|->
+e|Programmatically instruc Chromium to visit 'localhost:3000'
+p|->
+e|Programmatically instruc Chromium to click elements on the screen
+a|->
+t|=>Make assertion about content on screen
