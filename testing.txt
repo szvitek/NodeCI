@@ -18,3 +18,11 @@ p|->
 e|Programmatically instruc Chromium to click elements on the screen
 a|->
 t|=>Make assertion about content on screen
+
+puppeteer:
+repeat:
+-launch Chromium
+-navigate to app
+-click on stuff on screen
+-use a DOM selector to retrieve the content of an element
+-write assertion to make sure content is correct
