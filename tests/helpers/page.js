@@ -39,6 +39,10 @@ class CustomPage {
     await this.page.goto('localhost:3000');    // need to reload the page to "activate" the cookies
     await this.page.waitFor('a[href="/auth/logout"]');   // need to tell puppeteer to wait for the given element appears on screen
   }
+
+  async getConentsOf(selector) {
+    return this.page.$eval(selector, el => el.innerHTML);
+  }
 }
 
 module.exports = CustomPage;
