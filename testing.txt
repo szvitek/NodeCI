@@ -26,3 +26,21 @@ repeat:
 -click on stuff on screen
 -use a DOM selector to retrieve the content of an element
 -write assertion to make sure content is correct
+
+possible solution for moving login functionality by patching Puppeteer's Page class
+
+//------login.js:
+const Page = require('puppeteer'/lig/Page);
+...
+
+Page.prototype.login = async function() {
+  const user = await userFactory();
+  const { session, sig } = sessionFactory(user);
+
+  await this.setCookie({ name: 'session', value: session });
+  await this.setCookie({ name: 'session.sig', value: sig });
+  await this.goto('localhost:3000');    // need to reload the page to "activate" the cookies
+  await this.waitFor('a[href="/auth/logout"]');   // need to tell puppeteer to wait for the given element appears on screen
+  ...
+}
+//-------end
