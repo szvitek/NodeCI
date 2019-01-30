@@ -1,3 +1,6 @@
+// overwrite jest's default 5sec timeout for asyn functions
+jest.setTimeout(10000);
+
 require('../models/User');
 
 const mongoose = require('mongoose');
