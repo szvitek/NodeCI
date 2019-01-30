@@ -1,4 +1,6 @@
 const puppeteer = require('puppeteer');
+const sessionFactory = require('../factories/sessionFactory');
+const userFactory = require('../factories/userFactory');
 
 class CustomPage {
   static async build() {
@@ -25,6 +27,17 @@ class CustomPage {
   // insted of this method we could have changed the order of page <=> browser
   close() {
     this.browser.close();
+  }
+
+  async login() {
+    const user = await userFactory();
+    const { session, sig } = sessionFactory(user);
+
+    // set the cookie
+    await this.page.setCookie({ name: 'session', value: session });
+    await this.page.setCookie({ name: 'session.sig', value: sig });
+    await this.page.goto('localhost:3000');    // need to reload the page to "activate" the cookies
+    await this.page.waitFor('a[href="/auth/logout"]');   // need to tell puppeteer to wait for the given element appears on screen
   }
 }
 
