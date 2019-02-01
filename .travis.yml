@@ -17,5 +17,5 @@ install: # any other commands that need to setup the project running
   - npm run build
 script:
   - nohup npm run start &
-  - sleep 3
+  - sleep 15
   - npm run test
