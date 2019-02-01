@@ -1,0 +1,54 @@
+CI: continous integrations
+
+CI:
+process to merge all code changes into a single branch
+
+CI server:
+server that runst automatic checks (tests) on the codebase to ensure the changes haven't broken anything
+
+CI flow:
+-dev pushes code to github
+-CI server detects that a new push of code has occured
+-CI server clones project to a cloud-based virtual machine
+-CI server runs all tests
+-if all test pass, CI server marks build as 'passing' and does some optional followup
+(send email, auto-deploy, put notification on github, etc...)
+
+CI providers:
+Travis CI,
+Circle CI,
+Codeship,
+AWS Codebuild
+
+Travis CI flow:
+-dev pushes code to github
+-travis automatically detects pushed code
+-travis clones our project
+-travis runs tests using a 'travis.yml' file
+-if tests are OK, travis sends us an email
+
+Travis docs:
+docs.travis-ci.com
+
+.travis.yml important key/val pairs:
+language: node_js # fist we need to specify the language
+node_js:
+  - "8"       # then the version of the language
+dist: trusty  #image name, trusty is a small linux virtual machine,
+services:     # other services that we wanted to useing
+  - mongodb
+  - redis-server
+env:  # specify environment variables here
+  - NODE_ENV=ci
+cache:      # every time travis deploys runs this yml file, and builds up the environment. in order to cache the previous stuff
+(like create VM, adding services, install node modules, etc) here is the cache. it speeds up build a bit
+  directories:
+    - node_modules
+    - client/node_modules
+install: # any other commands that need to setup the project running
+  - npm install
+  - npm run build
+script: # similar to install, we can issue som cli commands like start the server, run tests
+  - nohup npm run start &  # (nohup: if the shell is closed, don't kill anything this command creates, &: run in background)
+  - sleep 3       # wait for 3 seconds (give some time to spin up npm start)
+  - npm run test

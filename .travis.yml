@@ -1,0 +1,21 @@
+language: node_js # fist we need to specify the language
+node_js:
+  - "8"       # then the version of the language
+dist: trusty  #small linux virtual machine
+services:
+  - mongodb
+  - redis-server
+env:  # environment variables (config/kejs.js CI)
+  - NODE_ENV=ci
+  - PORT=3000
+cache:  ## speed up build process
+  directories:
+    - node_modules
+    - client/node_modules
+install: # any other commands that need to setup the project running
+  - npm install
+  - npm run build
+script:
+  - nohup npm run start &
+  - sleep 3
+  - npm run test
