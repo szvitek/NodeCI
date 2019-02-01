@@ -6,8 +6,7 @@ services:
   - mongodb
   - redis-server
 env:  # environment variables (config/kejs.js CI)
-  - NODE_ENV=ci
-  - PORT=3000
+  - NODE_ENV=ci PORT=3000
 cache:  ## speed up build process
   directories:
     - node_modules
